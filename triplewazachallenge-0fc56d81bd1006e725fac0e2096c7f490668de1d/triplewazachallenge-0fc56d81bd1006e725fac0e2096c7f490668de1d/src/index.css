@@ -1,0 +1,349 @@
+/* Import keyboard accessibility focus styles */
+@import './styles/focus.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold;
+  }
+}
+
+/* Screen reader only utility class */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Slow pulse animation for kanji */
+@keyframes slow-pulse {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-slow-pulse {
+  animation: slow-pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Lateral spin animation for logo */
+@keyframes spin-lateral {
+  0% {
+    transform: rotateY(0deg);
+  }
+  6.25% {
+    transform: rotateY(360deg);
+  }
+  100% {
+    transform: rotateY(360deg);
+  }
+}
+
+.animate-spin-lateral {
+  animation: spin-lateral 16s linear infinite;
+  transform-style: preserve-3d;
+}
+
+/* Standing judogi animation - left side (visible during spin, hidden during bow) */
+@keyframes judogi-standing-left {
+  0% {
+    opacity: 1;
+    transform: rotateY(0deg);
+  }
+  6.25% {
+    opacity: 1;
+    transform: rotateY(360deg);
+  }
+  6.26% {
+    opacity: 0;
+    transform: rotateY(360deg);
+  }
+  93.74% {
+    opacity: 0;
+    transform: rotateY(360deg);
+  }
+  93.75% {
+    opacity: 1;
+    transform: rotateY(360deg);
+  }
+  100% {
+    opacity: 1;
+    transform: rotateY(360deg);
+  }
+}
+
+.animate-judogi-standing-left {
+  animation: judogi-standing-left 16s linear infinite;
+  transform-style: preserve-3d;
+}
+
+/* Bowing judogi animation - left side (hidden during spin, visible during bow) */
+@keyframes judogi-bowing-left {
+  0% {
+    opacity: 0;
+    transform: rotateY(360deg) rotateX(50deg) rotateZ(-20deg) scale(0.85);
+  }
+  6.25% {
+    opacity: 0;
+    transform: rotateY(360deg) rotateX(50deg) rotateZ(-20deg) scale(0.85);
+  }
+  6.26% {
+    opacity: 1;
+    transform: rotateY(360deg) rotateX(50deg) rotateZ(-20deg) scale(0.85);
+  }
+  93.74% {
+    opacity: 1;
+    transform: rotateY(360deg) rotateX(50deg) rotateZ(-20deg) scale(0.85);
+  }
+  93.75% {
+    opacity: 0;
+    transform: rotateY(360deg) rotateX(50deg) rotateZ(-20deg) scale(0.85);
+  }
+  100% {
+    opacity: 0;
+    transform: rotateY(360deg) rotateX(50deg) rotateZ(-20deg) scale(0.85);
+  }
+}
+
+.animate-judogi-bowing-left {
+  animation: judogi-bowing-left 16s linear infinite;
+  transform-style: preserve-3d;
+}
+
+/* Standing judogi animation - right side (visible during spin, hidden during bow) */
+@keyframes judogi-standing-right {
+  0% {
+    opacity: 1;
+    transform: rotateY(0deg);
+  }
+  6.25% {
+    opacity: 1;
+    transform: rotateY(-360deg);
+  }
+  6.26% {
+    opacity: 0;
+    transform: rotateY(-360deg);
+  }
+  93.74% {
+    opacity: 0;
+    transform: rotateY(-360deg);
+  }
+  93.75% {
+    opacity: 1;
+    transform: rotateY(-360deg);
+  }
+  100% {
+    opacity: 1;
+    transform: rotateY(-360deg);
+  }
+}
+
+.animate-judogi-standing-right {
+  animation: judogi-standing-right 16s linear infinite;
+  transform-style: preserve-3d;
+}
+
+/* Bowing judogi animation - right side (hidden during spin, visible during bow) */
+@keyframes judogi-bowing-right {
+  0% {
+    opacity: 0;
+    transform: rotateY(-360deg) rotateX(50deg) rotateZ(20deg) scale(0.85);
+  }
+  6.25% {
+    opacity: 0;
+    transform: rotateY(-360deg) rotateX(50deg) rotateZ(20deg) scale(0.85);
+  }
+  6.26% {
+    opacity: 1;
+    transform: rotateY(-360deg) rotateX(50deg) rotateZ(20deg) scale(0.85);
+  }
+  93.74% {
+    opacity: 1;
+    transform: rotateY(-360deg) rotateX(50deg) rotateZ(20deg) scale(0.85);
+  }
+  93.75% {
+    opacity: 0;
+    transform: rotateY(-360deg) rotateX(50deg) rotateZ(20deg) scale(0.85);
+  }
+  100% {
+    opacity: 0;
+    transform: rotateY(-360deg) rotateX(50deg) rotateZ(20deg) scale(0.85);
+  }
+}
+
+.animate-judogi-bowing-right {
+  animation: judogi-bowing-right 16s linear infinite;
+  transform-style: preserve-3d;
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s ease-out forwards;
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-scale-in {
+  animation: scale-in 0.5s ease-out forwards;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 100%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite;
+}
+
+.card-hover {
+  @apply transition-all duration-300 ease-out;
+}
+
+.card-hover:hover {
+  @apply transform -translate-y-1 shadow-2xl;
+}
+
+.btn-primary {
+  @apply bg-gradient-to-r from-osp-light-blue to-osp-blue text-white px-8 py-4 rounded-lg font-bold text-lg transition-all duration-300 shadow-lg;
+}
+
+.btn-primary:hover {
+  @apply from-osp-blue to-osp-navy shadow-xl transform -translate-y-0.5;
+}
+
+.btn-secondary {
+  @apply bg-gradient-to-r from-osp-red to-red-700 text-white px-8 py-4 rounded-lg font-bold text-lg transition-all duration-300 shadow-lg;
+}
+
+.btn-secondary:hover {
+  @apply from-red-700 to-red-800 shadow-xl transform -translate-y-0.5;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    text-shadow: 0 0 10px rgba(254, 206, 29, 0.8), 0 0 20px rgba(254, 206, 29, 0.6), 0 0 30px rgba(254, 206, 29, 0.4);
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(254, 206, 29, 1), 0 0 30px rgba(254, 206, 29, 0.8), 0 0 40px rgba(254, 206, 29, 0.6), 0 0 50px rgba(254, 206, 29, 0.4);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes float-in {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-float-in {
+  animation: float-in 0.8s ease-out forwards;
+}
+
+@keyframes bounce-slow {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+.animate-bounce-slow {
+  animation: bounce-slow 3s ease-in-out infinite;
+}
+
+.drop-shadow-glow {
+  filter: drop-shadow(0 0 8px currentColor) drop-shadow(0 0 16px currentColor);
+}
+
+@keyframes explosive-entrance {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) rotate(-5deg);
+  }
+  50% {
+    transform: scale(1.1) rotate(2deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+.animate-explosive-entrance {
+  animation: explosive-entrance 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes zoom-pulse {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-zoom-pulse {
+  animation: zoom-pulse 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
