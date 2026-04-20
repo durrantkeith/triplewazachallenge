@@ -8,7 +8,7 @@ export default function Footer({ onNavigate }: FooterProps) {
   const currentYear = new Date().getFullYear();
 
   const quickLinks = [
-    { id: 'home', label: 'Home' },
+    { id: 'library-home', label: 'Home' },
     { id: 'kata-collections', label: 'Kata Collections' },
     { id: 'levels', label: 'Levels & Progression' },
     { id: 'hall-of-fame', label: 'Hall of Fame' },
