@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Video, BookOpen, Users, Upload, X, CheckCircle, Play, Film as FilmIcon } from 'lucide-react';
+import { Video, BookOpen, Users, Upload, X, CheckCircle, Film as FilmIcon } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
 interface EducationPageProps {
@@ -424,7 +424,7 @@ export default function EducationPage({ onNavigate }: EducationPageProps) {
             Join our community and stay informed about upcoming challenges and events!
           </p>
           <button
-            onClick={() => onNavigate('submit')}
+            onClick={() => onNavigate('video-submit')}
             className="bg-white text-blue-700 px-8 py-3 rounded-lg font-bold text-lg hover:bg-blue-50 transition-colors"
           >
             Submit Your Video

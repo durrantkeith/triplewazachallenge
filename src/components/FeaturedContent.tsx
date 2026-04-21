@@ -46,7 +46,7 @@ export default function FeaturedContent() {
         .limit(18);
 
       if (error) throw error;
-      setSubmissions(data || []);
+      setSubmissions((data || []) as unknown as FeaturedSubmission[]);
     } catch (error) {
       console.error('Error fetching featured submissions:', error);
     } finally {

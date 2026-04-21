@@ -12,6 +12,7 @@ import HallOfFame from './components/HallOfFame';
 import FeaturedDojos from './components/FeaturedDojos';
 import TripleWazaDrill from './components/TripleWazaDrill';
 import VideoSubmissionPage from './components/VideoSubmissionPage';
+import VideoThankYouPage from './components/VideoThankYouPage';
 import AdminDashboard from './components/AdminDashboard';
 import ChallengeAFriend from './components/ChallengeAFriend';
 import ThankYouPage from './components/ThankYouPage';
@@ -21,6 +22,7 @@ import SafetyGuidelines from './components/SafetyGuidelines';
 import SplashScreen from './components/SplashScreen';
 import Footer from './components/Footer';
 import { FAQ } from './components/FAQ';
+import LibraryHomePage from './components/LibraryHomePage';
 import NameThatTechniqueGame from './components/NameThatTechniqueGame';
 
 function App() {
@@ -153,6 +155,8 @@ function App() {
         return <HomePage onNavigate={handleNavigate} />;
       case 'challenge':
         return <ChallengePage onNavigate={handleNavigate} />;
+      case 'library-home':
+        return <LibraryHomePage onNavigate={handleNavigate} />;
       case 'kata-collections':
         return <KataCollectionsPage onNavigate={handleNavigate} />;
       case 'kata-detail':
@@ -172,7 +176,9 @@ function App() {
       case 'featured-dojos':
         return <FeaturedDojos />;
       case 'video-submit':
-        return <VideoSubmissionPage />;
+        return <VideoSubmissionPage onNavigate={handleNavigate} />;
+      case 'video-thankyou':
+        return <VideoThankYouPage onNavigate={handleNavigate} />;
       case 'challenge-friend':
         return <ChallengeAFriend onNavigate={handleNavigate} />;
       case 'safety':
@@ -228,12 +234,14 @@ function App() {
       )}
 
       {!showSplash && (
-        <button
-          onClick={() => setCurrentPage('admin')}
-          className="fixed bottom-4 right-4 bg-slate-900 hover:bg-slate-700 text-slate-400 hover:text-white px-4 py-2 rounded-lg text-xs transition-all duration-300 shadow-lg opacity-30 hover:opacity-100"
-        >
-          Admin
-        </button>
+        <div className="fixed bottom-4 right-4 flex flex-col gap-2 items-end">
+          <button
+            onClick={() => setCurrentPage('admin')}
+            className="bg-slate-900 hover:bg-slate-700 text-slate-400 hover:text-white px-4 py-2 rounded-lg text-xs transition-all duration-300 shadow-lg opacity-30 hover:opacity-100"
+          >
+            Admin
+          </button>
+        </div>
       )}
     </div>
   );

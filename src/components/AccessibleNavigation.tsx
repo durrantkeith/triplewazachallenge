@@ -127,7 +127,7 @@ export default function AccessibleNavigation({ currentPage, onNavigate }: Naviga
             role="menu"
             aria-label="Mobile navigation"
           >
-            {navItems.map((item, index) => (
+            {navItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => handleNavigation(item.id)}

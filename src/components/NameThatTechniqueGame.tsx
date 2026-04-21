@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Trophy, RefreshCw, CheckCircle, XCircle } from 'lucide-react';
 
 interface Technique {

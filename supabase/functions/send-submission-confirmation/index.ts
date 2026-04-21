@@ -6,11 +6,11 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Client-Info, Apikey",
 };
 
-interface ReferralRequest {
-  sender_name: string;
-  sender_email: string;
-  recipient_email: string;
-  message?: string;
+interface ConfirmationRequest {
+  email: string;
+  dojo_name: string;
+  city: string;
+  country: string;
 }
 
 function escapeHtml(text: string): string {
@@ -30,32 +30,18 @@ Deno.serve(async (req: Request) => {
   }
 
   try {
-    const { sender_name, sender_email, recipient_email, message }: ReferralRequest = await req.json();
+    const { email, dojo_name, city, country }: ConfirmationRequest = await req.json();
 
-    if (!sender_name || !recipient_email) {
+    if (!email || !dojo_name || !country) {
       return new Response(
         JSON.stringify({ error: "Missing required fields" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
-    if (!EMAIL_REGEX.test(recipient_email)) {
+    if (!EMAIL_REGEX.test(email)) {
       return new Response(
-        JSON.stringify({ error: "Invalid recipient email address" }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
-
-    if (sender_email && !EMAIL_REGEX.test(sender_email)) {
-      return new Response(
-        JSON.stringify({ error: "Invalid sender email address" }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
-
-    if (sender_name.length > 200) {
-      return new Response(
-        JSON.stringify({ error: "Sender name too long" }),
+        JSON.stringify({ error: "Invalid email address" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
@@ -69,9 +55,10 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    const safeSenderName = escapeHtml(sender_name);
-    const safeSenderEmail = sender_email ? escapeHtml(sender_email) : null;
-    const safeMessage = message ? escapeHtml(message.slice(0, 5000)) : null;
+    const safeDojoName = escapeHtml(dojo_name.slice(0, 300));
+    const safeCity = city ? escapeHtml(city.slice(0, 200)) : "";
+    const safeCountry = escapeHtml(country.slice(0, 200));
+    const location = safeCity ? `${safeCity}, ${safeCountry}` : safeCountry;
 
     const emailBody = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff;">
@@ -80,21 +67,40 @@ Deno.serve(async (req: Request) => {
           <p style="color: #93c5fd; margin: 8px 0 0 0; font-size: 14px;">Nage no Kata Global Challenge</p>
         </div>
         <div style="padding: 30px;">
-          <h2 style="color: #1e3a5f;">You've Been Challenged!</h2>
-          <p>Hi there!</p>
-          <p><strong>${safeSenderName}</strong>${safeSenderEmail ? ` (${safeSenderEmail})` : ''} has challenged you to participate in the Triple Waza Challenge — a global judo initiative celebrating Nage no Kata.</p>
-          ${safeMessage ? `<div style="background: #f0f4f8; padding: 15px; border-left: 4px solid #1e3a5f; border-radius: 4px; margin: 20px 0;">
-            <p style="margin: 0;"><strong>Personal message from ${safeSenderName}:</strong></p>
-            <p style="margin: 10px 0 0 0; color: #374151; white-space: pre-wrap;">${safeMessage}</p>
-          </div>` : ''}
-          <p>Join dojos from around the world by recording and submitting three techniques from Nage no Kata. It's a celebration of judo's rich tradition and a chance to connect with the global judo community.</p>
-          <div style="margin: 30px 0; text-align: center;">
-            <a href="https://triplewazachallenge.com" style="background: #1e3a5f; color: white; padding: 14px 28px; text-decoration: none; border-radius: 6px; display: inline-block; font-size: 16px; font-weight: bold;">Accept the Challenge</a>
+          <div style="text-align: center; margin-bottom: 30px;">
+            <div style="background: #dcfce7; border: 1px solid #16a34a; color: #15803d; padding: 12px 24px; border-radius: 8px; display: inline-block; font-weight: bold; font-size: 18px;">
+              Submission Received!
+            </div>
           </div>
-          <p style="color: #6b7280; font-size: 14px;">Learn more at <a href="https://triplewazachallenge.com" style="color: #1e3a5f;">triplewazachallenge.com</a></p>
+
+          <h2 style="color: #1e3a5f; margin-top: 0;">Thank you, ${safeDojoName}!</h2>
+
+          <p style="color: #374151; font-size: 16px; line-height: 1.6;">
+            We've received your video submission from <strong>${location}</strong>. Your dojo is now part of the global Triple Waza Challenge archive.
+          </p>
+
+          <div style="background: #f0f4f8; padding: 20px; border-left: 4px solid #1e3a5f; border-radius: 4px; margin: 24px 0;">
+            <p style="margin: 0; color: #374151; font-size: 15px; line-height: 1.6;">
+              <strong>What happens next?</strong><br/>
+              Our team will review your video and add it to the Hall of Fame. You'll receive another email once your submission has been approved.
+            </p>
+          </div>
+
+          <p style="color: #374151; font-size: 15px; line-height: 1.6;">
+            Thank you for helping preserve and celebrate Judo's rich tradition of kata practice. Together, we're building a living record of global Judo cooperation.
+          </p>
+
+          <div style="margin: 30px 0; text-align: center;">
+            <a href="https://triplewazachallenge.com" style="background: #1e3a5f; color: white; padding: 14px 28px; text-decoration: none; border-radius: 6px; display: inline-block; font-size: 16px; font-weight: bold;">
+              View the Hall of Fame
+            </a>
+          </div>
         </div>
         <div style="background: #f9fafb; padding: 20px; text-align: center; border-top: 1px solid #e5e7eb;">
-          <p style="color: #9ca3af; font-size: 12px; margin: 0;">Triple Waza Challenge — Uniting the Global Judo Community</p>
+          <p style="color: #9ca3af; font-size: 12px; margin: 0;">Triple Waza Challenge &mdash; Uniting the Global Judo Community</p>
+          <p style="color: #9ca3af; font-size: 12px; margin: 4px 0 0 0;">
+            <a href="https://triplewazachallenge.com" style="color: #6b7280;">triplewazachallenge.com</a>
+          </p>
         </div>
       </div>
     `;
@@ -107,8 +113,8 @@ Deno.serve(async (req: Request) => {
       },
       body: JSON.stringify({
         from: "Triple Waza Challenge <noreply@triplewazachallenge.com>",
-        to: [recipient_email],
-        subject: `${safeSenderName} has challenged you to the Triple Waza Challenge!`,
+        to: [email],
+        subject: `Submission received — ${safeDojoName}`,
         html: emailBody,
       }),
     });
@@ -117,7 +123,7 @@ Deno.serve(async (req: Request) => {
       const errorData = await emailResponse.text();
       console.error("Resend API error:", errorData);
       return new Response(
-        JSON.stringify({ error: "Failed to send email" }),
+        JSON.stringify({ error: "Failed to send email", detail: errorData }),
         { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
@@ -129,7 +135,7 @@ Deno.serve(async (req: Request) => {
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (error) {
-    console.error("Error sending email:", error);
+    console.error("Error sending confirmation email:", error);
     return new Response(
       JSON.stringify({ error: "Internal server error" }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }

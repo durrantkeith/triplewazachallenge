@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { BookOpen, Award, Video, ChevronRight } from 'lucide-react';
+import { BookOpen, Video, ChevronRight } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
 interface KataCollectionsPageProps {
@@ -22,10 +22,6 @@ interface KataSet {
   techniques: string[];
 }
 
-interface SubmissionCount {
-  kata_id: string;
-  count: number;
-}
 
 export default function KataCollectionsPage({ onNavigate }: KataCollectionsPageProps) {
   const [katas, setKatas] = useState<Kata[]>([]);

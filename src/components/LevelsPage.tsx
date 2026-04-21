@@ -131,7 +131,7 @@ export default function LevelsPage({ onNavigate }: LevelsPageProps) {
         </div>
 
         <div className="space-y-8">
-          {levels.map((level, index) => {
+          {levels.map((level) => {
             const colors = getLevelColor(level.level_number);
             return (
               <div
@@ -175,7 +175,7 @@ export default function LevelsPage({ onNavigate }: LevelsPageProps) {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
-              onClick={() => onNavigate('submit')}
+              onClick={() => onNavigate('video-submit')}
               className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-8 py-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl"
             >
               The Challenge

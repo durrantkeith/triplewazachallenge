@@ -37,7 +37,7 @@ export function RecentActivity() {
         .limit(8);
 
       if (error) throw error;
-      setSubmissions(data || []);
+      setSubmissions((data || []) as unknown as RecentSubmission[]);
     } catch (error) {
       console.error('Error fetching recent submissions:', error);
     } finally {

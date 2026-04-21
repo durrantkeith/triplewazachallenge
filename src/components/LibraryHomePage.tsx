@@ -1,28 +1,14 @@
-import { useState, useEffect } from 'react';
-import { Trophy, Globe, Target, Users, Gift, BookOpen } from 'lucide-react';
+import { Trophy, Globe, Target, Users, Gift, BookOpen, Film, GraduationCap, Upload } from 'lucide-react';
 
 interface LibraryHomePageProps {
   onNavigate: (page: string, params?: Record<string, string>) => void;
 }
 
 export default function LibraryHomePage({ onNavigate }: LibraryHomePageProps) {
-  const [bounceOnMount, setBounceOnMount] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setBounceOnMount(false);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
-      <div
-        onClick={() => {
-          document.getElementById('challenge-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }}
-        className="bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 text-white py-16 cursor-pointer hover:opacity-95 transition-opacity duration-300"
-      >
+      <div className="bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <p className="text-3xl md:text-5xl font-bold mb-12 text-yellow-300 leading-tight">
             Traditional Judo. Smaller steps. Deeper understanding. Attainable goals for all.
@@ -60,6 +46,89 @@ export default function LibraryHomePage({ onNavigate }: LibraryHomePageProps) {
               <h3 className="font-bold text-xl mb-2">Connection</h3>
               <p className="text-slate-300 text-sm">Join a global community dedicated to kata preservation</p>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-white py-16">
+        <div className="max-w-7xl mx-auto px-4">
+          <h2 className="text-4xl font-bold text-center text-slate-900 mb-12">Explore the Library</h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            <button
+              onClick={() => onNavigate('hall-of-fame')}
+              className="bg-gradient-to-br from-blue-50 to-white border-2 border-blue-200 rounded-2xl p-8 hover:shadow-2xl hover:border-blue-400 transition-all duration-300 text-left group"
+            >
+              <div className="flex items-center space-x-4 mb-4">
+                <div className="bg-blue-100 p-4 rounded-xl group-hover:bg-blue-200 transition-colors">
+                  <BookOpen className="text-blue-600" size={32} />
+                </div>
+                <h3 className="text-2xl font-bold text-slate-900">Triple Waza Archive</h3>
+              </div>
+              <p className="text-slate-700 leading-relaxed">
+                This library serves as a living global archive of judoka preserving their part of Judo history through traditional techniques. By sharing our practice, dojos around the world connect through a common learning experience. Each submission becomes part of a living record—honouring the effort of participating dojos and preserving this knowledge for future generations.
+              </p>
+            </button>
+
+            <button
+              onClick={() => onNavigate('hall-of-fame')}
+              className="bg-gradient-to-br from-amber-50 to-white border-2 border-amber-200 rounded-2xl p-8 hover:shadow-2xl hover:border-amber-400 transition-all duration-300 text-left group"
+            >
+              <div className="flex items-center space-x-4 mb-4">
+                <div className="bg-amber-100 p-4 rounded-xl group-hover:bg-amber-200 transition-colors">
+                  <Film className="text-amber-600" size={32} />
+                </div>
+                <h3 className="text-2xl font-bold text-slate-900">Kata Collections</h3>
+              </div>
+              <p className="text-slate-700 leading-relaxed">
+                Browse our comprehensive collection of kata submissions from dojos worldwide. Watch, learn, and be inspired by the dedication of practitioners preserving traditional Judo techniques.
+              </p>
+            </button>
+
+            <button
+              onClick={() => onNavigate('hall-of-fame')}
+              className="bg-gradient-to-br from-emerald-50 to-white border-2 border-emerald-200 rounded-2xl p-8 hover:shadow-2xl hover:border-emerald-400 transition-all duration-300 text-left group"
+            >
+              <div className="flex items-center space-x-4 mb-4">
+                <div className="bg-emerald-100 p-4 rounded-xl group-hover:bg-emerald-200 transition-colors">
+                  <Trophy className="text-emerald-600" size={32} />
+                </div>
+                <h3 className="text-2xl font-bold text-slate-900">Hall of Fame</h3>
+              </div>
+              <p className="text-slate-700 leading-relaxed">
+                Celebrate the achievements of dojos and practitioners who have contributed to this living archive. View submissions by country, level, and kata.
+              </p>
+            </button>
+
+            <button
+              onClick={() => onNavigate('video-submit')}
+              className="bg-gradient-to-br from-rose-50 to-white border-2 border-rose-200 rounded-2xl p-8 hover:shadow-2xl hover:border-rose-400 transition-all duration-300 text-left group"
+            >
+              <div className="flex items-center space-x-4 mb-4">
+                <div className="bg-rose-100 p-4 rounded-xl group-hover:bg-rose-200 transition-colors">
+                  <Upload className="text-rose-600" size={32} />
+                </div>
+                <h3 className="text-2xl font-bold text-slate-900">Submit Video</h3>
+              </div>
+              <p className="text-slate-700 leading-relaxed">
+                Join the global community by submitting your dojo's kata video. Become part of this living archive and preserve your practice for future generations.
+              </p>
+            </button>
+
+            <button
+              onClick={() => onNavigate('education')}
+              className="bg-gradient-to-br from-purple-50 to-white border-2 border-purple-200 rounded-2xl p-8 hover:shadow-2xl hover:border-purple-400 transition-all duration-300 text-left group md:col-span-2"
+            >
+              <div className="flex items-center space-x-4 mb-4">
+                <div className="bg-purple-100 p-4 rounded-xl group-hover:bg-purple-200 transition-colors">
+                  <GraduationCap className="text-purple-600" size={32} />
+                </div>
+                <h3 className="text-2xl font-bold text-slate-900">How-To Guide: The Triple Waza Drill</h3>
+              </div>
+              <p className="text-slate-700 leading-relaxed">
+                Learn how to perform the Triple Waza Drill with detailed instructional videos and guidance. Perfect for dojos looking to participate in the challenge.
+              </p>
+            </button>
           </div>
         </div>
       </div>

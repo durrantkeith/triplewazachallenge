@@ -1,4 +1,4 @@
-import { Facebook, Twitter, Instagram, Youtube, Mail, MapPin, Phone, ExternalLink } from 'lucide-react';
+import { Facebook, Twitter, Instagram, Youtube, Mail, MapPin, ExternalLink } from 'lucide-react';
 
 interface FooterProps {
   onNavigate: (page: string, params?: Record<string, string>) => void;
@@ -8,11 +8,10 @@ export default function Footer({ onNavigate }: FooterProps) {
   const currentYear = new Date().getFullYear();
 
   const quickLinks = [
-    { id: 'library-home', label: 'Home' },
+    { id: 'library-home', label: 'Library Home' },
     { id: 'kata-collections', label: 'Kata Collections' },
-    { id: 'levels', label: 'Levels & Progression' },
     { id: 'hall-of-fame', label: 'Hall of Fame' },
-    { id: 'submit', label: 'Submit Video' },
+    { id: 'video-submit', label: 'Submit Video' },
     { id: 'education', label: 'How-To Guide' },
   ];
 
@@ -148,7 +147,7 @@ export default function Footer({ onNavigate }: FooterProps) {
                 <p className="text-xs text-slate-300 leading-relaxed">
                   <strong className="text-white">Launch Date:</strong>
                   <br />
-                  April 28, 2026
+                  April 28, 2027
                 </p>
               </div>
             </div>

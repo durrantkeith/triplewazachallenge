@@ -92,7 +92,7 @@ export function saveFocusAndRestore(action: () => void) {
 export function handleAccordionKeyboard(
   event: React.KeyboardEvent,
   onToggle: () => void,
-  isExpanded: boolean
+  _isExpanded: boolean
 ) {
   switch (event.key) {
     case 'Enter':

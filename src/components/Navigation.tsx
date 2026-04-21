@@ -1,4 +1,4 @@
-import { Menu, X, ChevronDown, Search, Trophy, Users, Video, UserPlus } from 'lucide-react';
+import { Menu, X, ChevronDown, Search } from 'lucide-react';
 import { useState } from 'react';
 
 interface NavigationProps {
@@ -16,7 +16,7 @@ interface NavItem {
 export default function Navigation({ currentPage, onNavigate }: NavigationProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchOpen] = useState(false);
 
   const navItems: NavItem[] = [
     {

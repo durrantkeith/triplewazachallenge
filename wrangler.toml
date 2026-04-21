@@ -1,7 +1,4 @@
 # Cloudflare Pages Configuration
 name = "triple-waza-challenge"
-compatibility_date = "2026-03-20"
+compatibility_date = "2024-01-01"
 pages_build_output_dir = "dist"
-[vars]
-VITE_SUPABASE_URL = "https://mhjdzgzyqlvdubmxqvio.supabase.co"
-VITE_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1oamR6Z3p5cWx2ZHVibXhxdmlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUyMDUwNTQsImV4cCI6MjA4MDc4MTA1NH0.V_8FyZ_L3blv_sYNudvQsmrAm8S4ccUMNyJoMAZ-J8w"

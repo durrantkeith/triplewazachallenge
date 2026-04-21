@@ -15,7 +15,7 @@ export function useKeyboardShortcuts(onNavigate: (page: string) => void) {
       { key: 'e', handler: () => onNavigate('education'), alt: true },
       { key: 'f', handler: () => onNavigate('founders'), alt: true },
       { key: 'l', handler: () => onNavigate('hall-of-fame'), alt: true },
-      { key: 's', handler: () => onNavigate('submit'), alt: true },
+      { key: 's', handler: () => onNavigate('video-submit'), alt: true },
     ];
 
     const listeners = shortcuts.map(({ key, handler, alt }) =>

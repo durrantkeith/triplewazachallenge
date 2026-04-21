@@ -8,15 +8,15 @@ export default function ChallengePage({ onNavigate }: ChallengePageProps) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-800 via-slate-900 to-slate-800">
       <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-white mb-3">
+        <div className="text-center mb-3">
+          <h1 className="text-xl md:text-2xl font-bold text-white mb-1">
             Welcome to the Triple Waza Challenge
           </h1>
         </div>
 
         <div className="space-y-8 mb-16">
-          <div className="bg-gradient-to-br from-slate-800 via-slate-900 to-slate-800 rounded-2xl p-12 shadow-xl">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+          <div className="bg-gradient-to-br from-slate-800 via-slate-900 to-slate-800 rounded-2xl p-8 shadow-xl">
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
               Why Join the Challenge?
             </h2>
             <p className="text-xl text-yellow-400 font-semibold mb-8">

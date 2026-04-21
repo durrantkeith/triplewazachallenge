@@ -70,7 +70,8 @@ For full details and resources, visit: triplewazachallenge.com`
       return;
     }
 
-    const validEmails = recipientEmails.filter(email => email.trim() && email.includes('@'));
+    const emailRegex = /^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$/;
+    const validEmails = recipientEmails.filter(email => email.trim() && emailRegex.test(email.trim()));
 
     if (validEmails.length === 0) {
       setError('Please enter at least one valid email address');

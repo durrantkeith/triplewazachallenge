@@ -73,7 +73,7 @@ export default function KataDetailPage({ kataSlug, onNavigate }: KataDetailPageP
           .order('submitted_at', { ascending: false })
           .limit(24);
 
-        if (submissionsData) setSubmissions(submissionsData);
+        if (submissionsData) setSubmissions(submissionsData as unknown as Submission[]);
       }
     } catch (error) {
       console.error('Error fetching kata data:', error);

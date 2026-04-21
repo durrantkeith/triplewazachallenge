@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
-import { ChevronDown, ChevronRight, MapPin, Award, X, BookOpen, Search, Video, TrendingUp } from 'lucide-react';
+import { ChevronDown, ChevronRight, MapPin, Award, BookOpen, Search, Video, TrendingUp } from 'lucide-react';
 
 interface Submission {
   id: string;
@@ -53,7 +53,6 @@ export default function HallOfFame({ onNavigate }: HallOfFameProps) {
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [loading, setLoading] = useState(true);
   const [expandedCountries, setExpandedCountries] = useState<Set<string>>(new Set());
-  const [selectedVideo, setSelectedVideo] = useState<Submission | null>(null);
   const [katas, setKatas] = useState<Kata[]>([]);
   const [kataSets, setKataSets] = useState<KataSet[]>([]);
   const [latestSubmissions, setLatestSubmissions] = useState<LatestSubmission[]>([]);
@@ -82,11 +81,11 @@ export default function HallOfFame({ onNavigate }: HallOfFameProps) {
       ]);
 
       if (submissionsData.error) throw submissionsData.error;
-      setSubmissions(submissionsData.data || []);
+      setSubmissions((submissionsData.data || []) as unknown as Submission[]);
 
       if (katasData.data) setKatas(katasData.data);
       if (kataSetsData.data) setKataSets(kataSetsData.data);
-      if (latestSubmissionsData.data) setLatestSubmissions(latestSubmissionsData.data);
+      if (latestSubmissionsData.data) setLatestSubmissions((latestSubmissionsData.data) as unknown as LatestSubmission[]);
 
       if (countriesData.data) {
         const uniqueCountries = [...new Set(countriesData.data.map(s => s.country))].sort();
@@ -291,30 +290,28 @@ export default function HallOfFame({ onNavigate }: HallOfFameProps) {
       <div className="max-w-7xl mx-auto px-4 mb-16">
         <div className="flex items-center justify-between mb-8">
           <h2 className="text-3xl font-bold text-slate-900">Latest Submissions</h2>
-          <button
-            onClick={() => {
-              const videoLibrary = document.getElementById('video-library');
-              if (videoLibrary) {
-                videoLibrary.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }
-            }}
+          <a
+            href="https://www.youtube.com/feed/playlists"
+            target="_blank"
+            rel="noopener noreferrer"
             className="text-blue-600 hover:text-blue-700 font-semibold inline-flex items-center space-x-1"
           >
             <span>View All</span>
             <TrendingUp size={20} />
-          </button>
+          </a>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
           {latestSubmissions.map(submission => {
             const videoId = extractYouTubeId(submission.youtube_url);
             return (
-              <div key={submission.id} className="group cursor-pointer" onClick={() => {
-                const videoLibrary = document.getElementById('video-library');
-                if (videoLibrary) {
-                  videoLibrary.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-              }}>
+              <a
+                key={submission.id}
+                href="https://www.youtube.com/feed/playlists"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group cursor-pointer block"
+              >
                 <div className="relative aspect-video rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105">
                   {videoId ? (
                     <>
@@ -350,7 +347,7 @@ export default function HallOfFame({ onNavigate }: HallOfFameProps) {
                     {submission.dojos?.city || submission.country}
                   </p>
                 </div>
-              </div>
+              </a>
             );
           })}
         </div>
@@ -482,9 +479,11 @@ export default function HallOfFame({ onNavigate }: HallOfFameProps) {
 
                             return (
                               <div key={submission.id} className="group">
-                                <button
-                                  onClick={() => setSelectedVideo(submission)}
-                                  className="relative aspect-video rounded-xl overflow-hidden w-full shadow-md hover:shadow-2xl transition-all duration-300 hover:scale-105"
+                                <a
+                                  href="https://www.youtube.com/feed/playlists"
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="relative aspect-video rounded-xl overflow-hidden w-full shadow-md hover:shadow-2xl transition-all duration-300 hover:scale-105 block"
                                 >
                                   {videoId ? (
                                     <>
@@ -516,7 +515,7 @@ export default function HallOfFame({ onNavigate }: HallOfFameProps) {
                                       </span>
                                     </div>
                                   </div>
-                                </button>
+                                </a>
                                 <div className="mt-2 px-1">
                                   <p className="text-sm font-semibold text-slate-900 truncate">
                                     {submission.dojos?.name || 'Independent'}
@@ -538,87 +537,6 @@ export default function HallOfFame({ onNavigate }: HallOfFameProps) {
         )}
       </div>
 
-      {selectedVideo && (
-        <div
-          className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4"
-          onClick={() => setSelectedVideo(null)}
-        >
-          <div
-            className="relative w-full max-w-6xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              onClick={() => setSelectedVideo(null)}
-              className="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors"
-            >
-              <X size={32} />
-            </button>
-            <div className="bg-white rounded-lg overflow-hidden">
-              <div className="aspect-video bg-black">
-                {extractYouTubeId(selectedVideo.youtube_url) && (
-                  <iframe
-                    width="100%"
-                    height="100%"
-                    src={`https://www.youtube.com/embed/${extractYouTubeId(selectedVideo.youtube_url)}`}
-                    title="YouTube video player"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerPolicy="strict-origin-when-cross-origin"
-                    allowFullScreen
-                    className="w-full h-full"
-                  />
-                )}
-              </div>
-              <div className="p-6 bg-white">
-                <div className="flex items-center justify-between mb-4">
-                  <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">
-                    Level {selectedVideo.level}
-                  </span>
-                  <span className="text-sm text-slate-500">
-                    {new Date(selectedVideo.submitted_at).toLocaleDateString()}
-                  </span>
-                </div>
-
-                {selectedVideo.dojos && (
-                  <div className="mb-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
-                    <div className="flex items-center space-x-2 mb-1">
-                      <MapPin className="text-blue-600" size={20} />
-                      <p className="text-lg font-bold text-slate-900">
-                        {selectedVideo.dojos.name}
-                      </p>
-                    </div>
-                    <p className="text-sm text-slate-600 ml-7">
-                      {selectedVideo.dojos.country}
-                    </p>
-                  </div>
-                )}
-
-                {selectedVideo.participant_names && (
-                  <div className="mb-4">
-                    <p className="text-sm font-semibold text-slate-700 mb-1">
-                      Participants:
-                    </p>
-                    <p className="text-base text-slate-900">
-                      {selectedVideo.participant_names}
-                    </p>
-                  </div>
-                )}
-
-                {selectedVideo.message && (
-                  <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
-                    <p className="text-sm font-semibold text-slate-700 mb-2">
-                      Message:
-                    </p>
-                    <p className="text-sm text-slate-600 italic">
-                      "{selectedVideo.message}"
-                    </p>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

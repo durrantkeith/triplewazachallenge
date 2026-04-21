@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
-import { Plus, Edit2, Trash2, Save, X, ArrowUp, ArrowDown, MessageSquare } from 'lucide-react';
+import { Plus, CreditCard as Edit2, Trash2, Save, ArrowUp, ArrowDown, MessageSquare } from 'lucide-react';
 
 interface Testimonial {
   id: string;

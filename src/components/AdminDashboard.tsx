@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { Check, X, LogIn, LogOut, Youtube, Clock, CheckCircle, XCircle, Search, ChevronLeft, ChevronRight, MessageSquare, CheckSquare, Square, Download, BarChart3, CreditCard as Edit2, Trash2, Save, Users, Upload, Plus, ArrowUp, ArrowDown, Quote, Star, MapPin, Eye, EyeOff, Music, Globe, ExternalLink, Copy } from 'lucide-react';
 import { TestimonialsManager } from './TestimonialsManager';
@@ -152,7 +152,12 @@ export default function AdminDashboard() {
 
   const checkAuth = async () => {
     const { data: { session } } = await supabase.auth.getSession();
-    setIsAuthenticated(!!session);
+    if (!session) {
+      setIsAuthenticated(false);
+      return;
+    }
+    const isAdmin = session.user?.app_metadata?.is_admin === true;
+    setIsAuthenticated(isAdmin);
   };
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -161,12 +166,20 @@ export default function AdminDashboard() {
     setLoading(true);
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
       if (error) throw error;
+
+      const isAdmin = data.user?.app_metadata?.is_admin === true;
+      if (!isAdmin) {
+        await supabase.auth.signOut();
+        setLoginError('Access denied. Admin privileges required.');
+        return;
+      }
+
       setIsAuthenticated(true);
     } catch (error) {
       setLoginError(error instanceof Error ? error.message : 'Login failed');
@@ -2458,6 +2471,26 @@ export default function AdminDashboard() {
                       </div>
                     </div>
                   </div>
+                </div>
+              </div>
+
+              <div className="border-t border-slate-200 pt-6">
+                <h3 className="text-xl font-bold text-slate-900 mb-4">Project Download</h3>
+                <div className="bg-slate-50 rounded-lg p-6">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <h4 className="font-bold text-slate-900 mb-1">Download Project ZIP</h4>
+                      <p className="text-sm text-slate-600">Download the full project source files as a ZIP archive for backup or deployment.</p>
+                    </div>
+                  </div>
+                  <a
+                    href="/triplewazachallenge-export.zip"
+                    download="triplewazachallenge-export.zip"
+                    className="inline-flex items-center space-x-2 bg-blue-700 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold transition-colors mt-4"
+                  >
+                    <Download size={16} />
+                    <span>Download Project ZIP</span>
+                  </a>
                 </div>
               </div>
 

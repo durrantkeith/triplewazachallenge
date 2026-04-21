@@ -3,7 +3,7 @@ import { supabase } from '../lib/supabase';
 import { Save, Volume2, Upload, Trash2, Play } from 'lucide-react';
 
 interface MusicSettings {
-  id: string;
+  id: number;
   music_file_path: string | null;
 }
 
@@ -39,23 +39,14 @@ export default function MusicManager() {
         setSettings(data);
 
         if (data.music_file_path) {
-          const { data: signedUrlData } = await supabase.storage
+          const { data: urlData } = await supabase.storage
             .from('background_music')
             .createSignedUrl(data.music_file_path, 3600);
 
-          if (signedUrlData?.signedUrl) {
-            setCurrentMusicUrl(signedUrlData.signedUrl);
+          if (urlData?.signedUrl) {
+            setCurrentMusicUrl(urlData.signedUrl);
           }
         }
-      } else {
-        const { data: newSettings, error: insertError } = await supabase
-          .from('music_settings')
-          .insert({ music_file_path: null })
-          .select()
-          .single();
-
-        if (insertError) throw insertError;
-        setSettings(newSettings);
       }
     } catch (error) {
       console.error('Error fetching music settings:', error);
@@ -94,7 +85,7 @@ export default function MusicManager() {
       const timestamp = Date.now();
       const fileName = `uploads/${timestamp}-${currentFile.name}`;
 
-      const { data: uploadData, error: uploadError } = await supabase.storage
+      const { error: uploadError } = await supabase.storage
         .from('background_music')
         .upload(fileName, currentFile, {
           cacheControl: '3600',
@@ -116,10 +107,14 @@ export default function MusicManager() {
         }
       }
 
+      if (!settings?.id) {
+        throw new Error('Music settings not found. Please refresh the page and try again.');
+      }
+
       const { error: updateError } = await supabase
         .from('music_settings')
-        .update({ music_file_path: fileName })
-        .eq('id', settings?.id || '');
+        .update({ music_file_path: fileName, updated_by: user.id, updated_at: new Date().toISOString() })
+        .eq('id', settings.id);
 
       if (updateError) {
         console.error('Update error details:', updateError);

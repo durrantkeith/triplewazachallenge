@@ -82,7 +82,7 @@ export default function ThankYouPage({ onNavigate }: ThankYouPageProps) {
                 Want to submit your own video to the challenge?
               </p>
               <button
-                onClick={() => onNavigate('submit')}
+                onClick={() => onNavigate('video-submit')}
                 className="text-osp-blue hover:text-osp-navy font-semibold text-lg underline"
               >
                 Submit Your Dojo's Video
