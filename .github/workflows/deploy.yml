@@ -6,22 +6,28 @@ on:
       - main
   workflow_dispatch:
 
+# Opt into Node.js 24 for JavaScript-based GitHub Actions runtime (per GitHub warning)
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     permissions:
       contents: read
       deployments: write
-    name: Deploy to Cloudflare Pages
+      statuses: write
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Use Node 22 for your project build (Wrangler requires Node >= 20)
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-          cache: 'npm'
+          node-version: "22"
+          cache: "npm"
 
       - name: Install dependencies
         run: npm ci
@@ -37,7 +43,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: triple-waza-challenge
+          projectName: triplewazachallenge
           directory: dist
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           branch: main
