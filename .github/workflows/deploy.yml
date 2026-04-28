@@ -6,7 +6,8 @@ on:
       - main
   workflow_dispatch:
 
-# Opt into Node.js 20 for JavaScript-based GitHub Actions runtime (per GitHub warning)
+# Opt into Node.js 24 for JavaScript-based GitHub Actions runtime (per GitHub warning),
+# while this workflow uses Node.js 20 for the project build steps below.
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
