@@ -1,21 +1,14 @@
 name: Deploy to Cloudflare Pages
-
 on:
   push:
     branches:
       - main
   workflow_dispatch:
-
-# Deploys this repository to Cloudflare Pages.
-#
-# Notes on Node.js versions:
-# - Project build steps in this workflow use Node.js 24 (configured via actions/setup-node).
-# - Separately, some GitHub Actions are implemented in JavaScript and run on GitHub-hosted
-#   Node.js runtimes. The env var below opts those JavaScript-based actions into the
-#   Node.js 24 runtime to align with GitHub’s runtime migration guidance/warnings.
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
-
+concurrency:
+  group: pages-deploy-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -23,26 +16,21 @@ jobs:
       contents: read
       deployments: write
       statuses: write
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Setup Node.js (project build)
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "24"
+          node-version: "22"
           cache: "npm"
-
       - name: Install dependencies
         run: npm ci
-
-      - name: Build project
+      - name: Build
         run: npm run build
         env:
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
-
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/pages-action@v1
         with:
@@ -50,4 +38,4 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: triplewazachallenge
           directory: dist
-          gitHubToken: ${{ secrets.G
+          branch: main
